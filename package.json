@@ -1,0 +1,15 @@
+{
+  "name": "elroy-ws-reconnect",
+  "version": "0.0.1",
+  "description": "ws reconnect wrapper with buffering",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam Magaluk <AdamMagaluk@gmail.com>",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "reconnect-core": "0.0.1",
+    "ws": "~0.4.31"
+  }
+}
