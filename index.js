@@ -14,6 +14,9 @@ module.exports = wsr;
 function wsr(host,options){
   var self = this;
 
+  this.pingInterval = options.pingInterval || null;
+  this._pingTimer;
+
   // Instance of transport
   this._conn = null;
 
@@ -49,9 +52,12 @@ wsr.prototype._sendToTransport = function(data) {
   });
 };
 
-wsr.prototype._stopConnection = function() {
+wsr.prototype._stopConnection = function(err) {
+  if(this._conn)
+    this.emit('disconnect',err);
   this._conn = null;
-  this.emit('disconnect');
+
+  clearInterval(this._pingTimer);
 };
 
 wsr.prototype._startConnection = function(conn) {
@@ -60,6 +66,11 @@ wsr.prototype._startConnection = function(conn) {
   this._clearBuffer();
   var args = ['connect'].concat(arguments);
   this.emit('connect',conn);
+
+  if(this.pingInterval){
+    this._pingTimer = setInterval(this._conn.ping.bind(this._conn,null,{},true),this.pingInterval);
+  }
+
 };
 
 wsr.prototype._clearBuffer = function() {
